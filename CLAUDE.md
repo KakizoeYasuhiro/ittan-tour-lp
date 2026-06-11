@@ -12,12 +12,14 @@
 
 ## ドメイン / DNS
 
-- ドメインは**お名前.com**で取得・管理（ネームサーバーもお名前.com = `dns1/dns2.onamae.com`）
-- DNSレコード（設定済み・正常）:
+- ドメインは**お名前.com**で取得。ただし**DNSはCloudflareで管理**（2026-06-11にネームサーバーを `bowen.ns.cloudflare.com` / `joyce.ns.cloudflare.com` へ変更済み）。今後のDNS変更はCloudflareダッシュボードで行う
+- DNSレコード（Cloudflare上、すべて **Proxied=オレンジ雲**）:
   - apex `ittan-tour.com` → A `185.199.108-111.153`（GitHub Pages 4本）
   - `www` → CNAME `kakizoeyasuhiro.github.io`
-- **HTTPS証明書**: 2026-06-11時点でGitHub側のLet's Encrypt発行が長時間（6時間以上）停滞中。DNS/CAA/ドメイン設定は正常確認済みなので原因はGitHub側。発行されれば `gh api -X PUT repos/KakizoeYasuhiro/ittan-tour-lp/pages -f https_enforced=true` でEnforce HTTPSを有効化する。急ぐ場合はCloudflareを前段に挟む案あり。
-  - 確認: `gh api repos/KakizoeYasuhiro/ittan-tour-lp/pages --jq '.https_certificate.state'`
+- **HTTPS**: ✅ 解決済み。CloudflareのUniversal SSL（Google Trust Services、subject=ittan-tour.com）で配信。SSL/TLSモード=**Full**、Always Use HTTPS=ON。
+  - 経緯: GitHub PagesのLet's Encrypt発行が6時間以上停滞したため、Cloudflareを前段に挟む方式に切替えて解決した。GitHub側のEnforce HTTPSは未使用（CloudflareがTLS終端）。
+  - ⚠️ Cloudflareのプロキシ(オレンジ雲)がOFF(DNS only)だとCloudflare証明書が効かずHTTPSが立たないので、レコードは必ずProxiedにすること。
+  - 確認: `dig +short A ittan-tour.com @1.1.1.1`（104.x/172.67.x が返ればProxied）
 
 ## チケット状態バッジ（残り僅か / 売り切れ）
 
