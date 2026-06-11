@@ -198,6 +198,39 @@ a{color:inherit}
 }
 .buy:active{transform:translateY(1px);opacity:.92}
 
+/* ---------- チケット状態バッジ（残り僅か / 売り切れ） ----------
+   席数連動はせず、手動でクラスを付け外しして切り替える方式。
+   ・残り僅か … <span class="status few">残り僅か</span> を .show-head に追加
+   ・売り切れ … article に is-soldout を付け、購入ボタンを
+               <span class="buy sold">SOLD OUT</span> に差し替え          */
+.status{
+  font-size:10px;
+  letter-spacing:.18em;
+  border-radius:999px;
+  padding:3px 10px;
+  align-self:center;
+  white-space:nowrap;
+}
+.status.few{            /* 残り僅か：赤塗りで煽る */
+  color:#fff;
+  background:var(--accent);
+}
+.status.soldout{        /* 売り切れ：グレーで沈める */
+  color:var(--ink-dim);
+  border:1px solid var(--line);
+  background:#f3f3f3;
+}
+.show.is-soldout{opacity:.72}
+.show.is-soldout .date,
+.show.is-soldout .city{color:var(--ink-dim)}
+.buy.sold{              /* 無効化した購入ボタン */
+  background:#ededed;
+  color:#9a9a9a;
+  cursor:default;
+  pointer-events:none;
+  letter-spacing:.24em;
+}
+
 /* ---------- FOOTER ---------- */
 footer{
   border-top:1px solid var(--line);
@@ -270,6 +303,7 @@ footer a{color:var(--ink-dim)}
       <div class="show-head">
         <p class="date">8.8<small>土</small></p>
         <p class="city">愛知</p>
+        <span class="status few">残り僅か</span>
       </div>
       <p class="venue">鑪ら場<a href="https://maps.google.com/?cid=8952536182862667046" target="_blank" rel="noopener">地図 ↗</a></p>
       <p class="times">OPEN <b>16:00</b> ／ START <b>16:30</b></p>
