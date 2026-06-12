@@ -25,8 +25,9 @@
 
 席数連動はせず、**HTMLのクラスを手動で付け外し**して切り替える方式（CSSは`index.html`内に実装済み）。
 
-- **残り僅か**: 該当カードの`.show-head`に `<span class="status few">残り僅か</span>` を追加（赤塗りバッジ、購入ボタンは有効のまま）。※愛知 8.8 に適用済み
-- **売り切れ**: `<article class="show is-soldout">` にして、購入リンクを `<span class="buy sold">SOLD OUT（全席予約済）</span>` に差し替え（グレー無効ボタン＋カードを薄く）。売り切れ表記は **SOLD OUT（全席予約済）** で統一。本番では現状未使用。サンプルは `_sample-soldout.html`
+- **残り僅か**: 該当カードの`.show-head`に `<span class="status few">残り僅か</span>` を追加（赤塗りバッジ、購入ボタンは有効のまま）
+- **売り切れ**: `<article class="show is-soldout">` にして、`.show-head`にバッジ `<span class="status soldout">SOLD OUT（全席予約済）</span>`、購入リンクを `<span class="buy sold">SOLD OUT（全席予約済）</span>` に差し替え（グレー無効ボタン＋カードを薄く）。バッジ・ボタンとも表記は **SOLD OUT（全席予約済）** で統一。サンプルは `_sample-soldout.html`
+- 適用状況（2026-06-12時点）: **愛知 8.8 = 売り切れ**。他は通常
 - 運用: ユーザーから「○○が残り僅か／完売した」と言われたら、該当カードにクラスを足してpushする
 
 ## 全8公演（開演=記載時刻 / 開場=30分前）
