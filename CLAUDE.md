@@ -21,14 +21,15 @@
   - ⚠️ Cloudflareのプロキシ(オレンジ雲)がOFF(DNS only)だとCloudflare証明書が効かずHTTPSが立たないので、レコードは必ずProxiedにすること。
   - 確認: `dig +short A ittan-tour.com @1.1.1.1`（104.x/172.67.x が返ればProxied）
 
-## チケット状態バッジ（残り僅か / 売り切れ）
+## チケット状態バッジ（残り僅か / 売り切れ / 終了）
 
 席数連動はせず、**HTMLのクラスを手動で付け外し**して切り替える方式（CSSは`index.html`内に実装済み）。
 
 - **残り僅か**: 該当カードの`.show-head`に `<span class="status few">残り僅か</span>` を追加（赤塗りバッジ、購入ボタンは有効のまま）
 - **売り切れ**: `<article class="show is-soldout">` にして、`.show-head`にバッジ `<span class="status soldout">SOLD OUT（全席予約済）</span>`、購入リンクを `<span class="buy sold">SOLD OUT（全席予約済）</span>` に差し替え（グレー無効ボタン＋カードを薄く）。バッジ・ボタンとも表記は **SOLD OUT（全席予約済）** で統一。サンプルは `_sample-soldout.html`
-- 適用状況（2026-06-12時点）: **愛知 8.8 = 売り切れ**。他は通常
-- 運用: ユーザーから「○○が残り僅か／完売した」と言われたら、該当カードにクラスを足してpushする
+- **終了**: 公演日を過ぎたカードは `<article class="show is-ended">` にして、`.show-head`にバッジ `<span class="status ended">終了</span>`、購入リンクを `<span class="buy sold">終了しました</span>` に差し替え（見た目は売り切れと同じグレー沈み）
+- 適用状況（2026-07-05時点）: **東京 7.4 = 終了**、**愛知 8.8 = 売り切れ**。他は通常
+- 運用: ユーザーから「○○が残り僅か／完売した」と言われたら該当カードにクラスを足してpushする。公演が終わったら（指示があったら）その公演を終了表示に切り替える
 
 ## 全8公演（開演=記載時刻 / 開場=30分前）
 

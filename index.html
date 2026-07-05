@@ -198,11 +198,14 @@ a{color:inherit}
 }
 .buy:active{transform:translateY(1px);opacity:.92}
 
-/* ---------- チケット状態バッジ（残り僅か / 売り切れ） ----------
+/* ---------- チケット状態バッジ（残り僅か / 売り切れ / 終了） ----------
    席数連動はせず、手動でクラスを付け外しして切り替える方式。
    ・残り僅か … <span class="status few">残り僅か</span> を .show-head に追加
    ・売り切れ … article に is-soldout を付け、購入ボタンを
-               <span class="buy sold">SOLD OUT</span> に差し替え          */
+               <span class="buy sold">SOLD OUT</span> に差し替え
+   ・終了     … article に is-ended を付け、バッジ
+               <span class="status ended">終了</span> を .show-head に追加、
+               購入ボタンを <span class="buy sold">終了しました</span> に差し替え */
 .status{
   font-size:10px;
   letter-spacing:.18em;
@@ -220,9 +223,17 @@ a{color:inherit}
   border:1px solid var(--line);
   background:#f3f3f3;
 }
-.show.is-soldout{opacity:.72}
+.status.ended{          /* 終了：グレーで沈める（売り切れと同トーン） */
+  color:var(--ink-dim);
+  border:1px solid var(--line);
+  background:#f3f3f3;
+}
+.show.is-soldout,
+.show.is-ended{opacity:.72}
 .show.is-soldout .date,
-.show.is-soldout .city{color:var(--ink-dim)}
+.show.is-soldout .city,
+.show.is-ended .date,
+.show.is-ended .city{color:var(--ink-dim)}
 .buy.sold{              /* 無効化した購入ボタン */
   background:#ededed;
   color:#9a9a9a;
@@ -275,14 +286,15 @@ footer a{color:var(--ink-dim)}
   <section class="month">
     <p class="month-label">7月</p>
 
-    <article class="show">
+    <article class="show is-ended">
       <div class="show-head">
         <p class="date">7.4<small>土</small></p>
         <p class="city">東京</p>
+        <span class="status ended">終了</span>
       </div>
       <p class="venue">NEIGHBOR<a href="https://maps.google.com/?cid=4794020184652127015" target="_blank" rel="noopener">地図 ↗</a></p>
       <p class="times">OPEN <b>13:00</b> ／ START <b>13:30</b></p>
-      <a class="buy" href="https://tiget.net/events/496413" target="_blank" rel="noopener">チケットを購入</a>
+      <span class="buy sold">終了しました</span>
     </article>
 
     <article class="show">
