@@ -17,7 +17,14 @@
     h1 { margin: 0; font-size: clamp(27px, 4vw, 44px); line-height: 1.35; letter-spacing: .045em; }
     .subtitle { margin: 10px 0 0; font-size: 14px; line-height: 1.8; }
     .note { margin: 15px 0 0; font-size: 12px; line-height: 1.7; }
-    .section { margin-top: 46px; }
+    .tabs { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin: 30px 0 0; padding: 8px 0; background: rgba(255, 255, 255, .96); }
+    .tab { min-width: 0; min-height: 59px; padding: 9px 5px 7px; border: 1px solid #777; border-radius: 0; background: rgba(255, 255, 255, .54); color: #181818; cursor: pointer; font: inherit; text-align: center; }
+    .tab strong { display: block; font-size: 13px; line-height: 1.4; }
+    .tab small { display: block; margin-top: 2px; font-size: 10px; line-height: 1.4; }
+    .tab[aria-pressed="true"] { border-color: #181818; background: #181818; color: #fff; }
+    .tab:focus-visible { outline: 3px solid #d7261e; outline-offset: 2px; }
+    .section { margin-top: 30px; }
+    .section[hidden] { display: none; }
     .section h2 { margin: 0 0 22px; padding-bottom: 11px; border-bottom: 1px solid #222; font-size: 19px; letter-spacing: .08em; }
     .artists { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 27px 30px; align-items: start; }
     .artist { break-inside: avoid; min-width: 0; }
@@ -31,8 +38,11 @@
       body { background-attachment: scroll; }
       body::before { position: fixed; }
       main { width: calc(100% - 24px); margin: 12px auto; padding: 27px 21px 38px; background: rgba(255, 255, 255, .91); }
+      .tabs { gap: 4px; margin-top: 24px; padding: 7px 0; }
+      .tab { min-height: 62px; padding: 8px 3px; }
+      .tab strong { font-size: 11px; }
       .artists { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-      .section { margin-top: 38px; }
+      .section { margin-top: 28px; }
       .section h2 { margin-bottom: 21px; }
       .artist li { font-size: 14px; }
     }
@@ -46,6 +56,7 @@
       <p class="subtitle">CF限定「一旦、ツアーで。」Khore カラオケオフ会 in OZ</p>
       <p class="note">掲載曲は仮リストです。内容は今後変更する場合があります。</p>
     </header>
+    <nav id="category-tabs" class="tabs" aria-label="曲目の区分"></nav>
     <div id="song-list" aria-live="polite"></div>
     <p class="foot">KHORE × ITTAN TOUR</p>
   </main>
@@ -54,9 +65,30 @@
       .then(response => { if (!response.ok) throw new Error('List unavailable'); return response.json(); })
       .then(groups => {
         const root = document.getElementById('song-list');
-        for (const group of groups) {
+        const tabs = document.getElementById('category-tabs');
+        const buttons = [];
+        const sections = [];
+        function activate(index) {
+          tabs.scrollIntoView({ block: 'start' });
+          buttons.forEach((button, current) => button.setAttribute('aria-pressed', String(current === index)));
+          sections.forEach((section, current) => { section.hidden = current !== index; });
+        }
+        groups.forEach((group, index) => {
+          const button = document.createElement('button');
+          button.className = 'tab';
+          button.type = 'button';
+          button.setAttribute('aria-pressed', String(index === 0));
+          const label = document.createElement('strong');
+          label.textContent = group.title;
+          const count = document.createElement('small');
+          count.textContent = `${group.artists.reduce((total, artist) => total + artist.songs.length, 0)}曲`;
+          button.append(label, count);
+          button.addEventListener('click', () => activate(index));
+          tabs.append(button);
+          buttons.push(button);
           const section = document.createElement('section');
           section.className = 'section';
+          section.hidden = index !== 0;
           const heading = document.createElement('h2');
           heading.textContent = group.title;
           section.append(heading);
@@ -78,7 +110,8 @@
           }
           section.append(artists);
           root.append(section);
-        }
+          sections.push(section);
+        });
       })
       .catch(() => {
         document.getElementById('song-list').textContent = '曲目を読み込めませんでした。時間をおいて再度お試しください。';
