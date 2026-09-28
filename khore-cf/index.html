@@ -62,7 +62,7 @@
     <p class="foot">KHORE × ITTAN TOUR</p>
   </main>
   <script>
-    fetch('./songs.json')
+    fetch(`./songs.json?v=${Date.now()}`)
       .then(response => { if (!response.ok) throw new Error('List unavailable'); return response.json(); })
       .then(groups => {
         const root = document.getElementById('song-list');
