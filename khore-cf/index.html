@@ -16,7 +16,9 @@
     .eyebrow { margin: 0 0 9px; font: 700 11px/1.5 Arial, sans-serif; letter-spacing: .22em; }
     h1 { margin: 0; font-size: clamp(27px, 4vw, 44px); line-height: 1.35; letter-spacing: .045em; }
     .subtitle { margin: 10px 0 0; font-size: 14px; line-height: 1.8; }
-    .note { margin: 15px 0 0; font-size: 12px; line-height: 1.7; }
+    .note { margin: 15px 0 0; padding: 0; list-style: none; font-size: 12px; line-height: 1.7; }
+    .note li { display: flex; }
+    .note li::before { content: "・"; flex: none; }
     .tabs { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin: 30px 0 0; padding: 8px 0; background: rgba(239, 237, 230, .45); backdrop-filter: blur(14px); }
     .tab { min-width: 0; min-height: 59px; padding: 9px 5px 7px; border: 0; border-bottom: 2px solid rgba(0, 0, 0, .25); border-radius: 0; background: transparent; color: #181818; cursor: pointer; font: inherit; text-align: center; }
     .tab strong { display: block; font-size: 13px; line-height: 1.4; }
@@ -54,7 +56,7 @@
       <p class="eyebrow">KHORE CF EVENT</p>
       <h1>リクエスト曲リスト</h1>
       <p class="subtitle">CF限定「一旦、ツアーで。」Khore カラオケオフ会 in OZ</p>
-      <p class="note">掲載曲は仮リストです。内容は今後変更する場合があります。</p>
+      <ul class="note"><li>掲載曲は仮リストです。内容は今後変更する場合があります。</li></ul>
     </header>
     <nav id="category-tabs" class="tabs" aria-label="曲目の区分"></nav>
     <div id="song-list" aria-live="polite"></div>
